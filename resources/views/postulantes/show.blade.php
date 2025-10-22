@@ -1,6 +1,4 @@
 @extends('layouts.app')
-
-
 @section('title', $postulante->apellidos_nombres)
 @section('content')
 
@@ -54,7 +52,7 @@
         {{-- Columna Izquierda: Información Principal --}}
         <div class="col-lg-8">
 
-            {{-- Sección: Información Personal --}}
+            {{-- Sección: Información Personall --}}
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-header bg-light">
                     <h5 class="mb-0"><i class="bi bi-person me-2"></i>Información Personal</h5>
