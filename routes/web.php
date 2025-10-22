@@ -74,6 +74,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/notificaciones/dropdown', [App\Http\Controllers\NotificationController::class, 'getDropdownNotifications'])->name('notifications.dropdown');
 
 
+    Route::post('/postulantes/{postulante}/subir-a-drive', [PostulanteController::class, 'subirDocumentosDrive'])->name('postulantes.subirDocumentosDrive');
+
 });
 
 
