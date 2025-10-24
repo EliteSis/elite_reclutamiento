@@ -660,49 +660,4 @@ class PostulanteController extends Controller
         return response()->download($zipPath)->deleteFileAfterSend(true);
     }
 
-
-
-    /**
-     * Sube los documentos del postulante a una carpeta para sincronizar con Google Drive
-     */
-    public function subirDocumentosDrive(Postulante $postulante)
-    {
-        try {
-            // 1. Crear el archivo ZIP temporal (el código es el mismo)
-            $tempDir = 'temp';
-            if (!Storage::disk('public')->exists($tempDir)) {
-                Storage::disk('public')->makeDirectory($tempDir);
-            }
-            $zipFileName = Str::slug($postulante->apellidos_nombres) . '_' . $postulante->ciudad_postular . '.zip';
-            $zipPath = storage_path('app/public/' . $tempDir . '/' . $zipFileName);
-            $zip = new ZipArchive;
-            if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== TRUE) {
-                return back()->with('error', 'No se pudo crear el archivo ZIP.');
-            }
-            // ... (código para añadir archivos al ZIP, igual que antes) ...
-            $zip->close();
-
-            // 2. Mover el ZIP a la carpeta de sincronización
-            $syncDir = 'public/drive_sync'; // <-- Nuestra carpeta mágica
-            if (!Storage::disk('public')->exists($syncDir)) {
-                Storage::disk('public')->makeDirectory($syncDir);
-            }
-
-            $finalPath = $syncDir . '/' . $zipFileName;
-            Storage::disk('public')->put($finalPath, file_get_contents($zipPath));
-
-            // 3. Limpiar el archivo ZIP temporal (el que está en la carpeta 'temp')
-            if (file_exists($zipPath)) {
-                unlink($zipPath);
-            }
-
-            return back()->with('success', '¡Listo! Los documentos de "' . $postulante->apellidos_nombres . '" se están subiendo a Google Drive. Estarán disponibles en unos minutos.');
-
-        } catch (\Exception $e) {
-            return back()->with('error', 'Error al preparar los documentos: ' . $e->getMessage());
-        }
-    }
-
-
-
 }

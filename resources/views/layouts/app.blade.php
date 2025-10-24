@@ -679,15 +679,7 @@
                 mainContent.classList.remove('sidebar-show');
             });
 
-            // Toggle Tema Oscuro
-            themeToggle.addEventListener('click', function () {
-                document.body.classList.toggle('dark-theme');
-                themeToggle.classList.toggle('dark');
-
-                // Guardar preferencia en localStorage
-                const isDarkTheme = document.body.classList.contains('dark-theme');
-                localStorage.setItem('darkTheme', isDarkTheme);
-            });
+            
 
             // Cargar preferencia de tema al iniciar
             const savedTheme = localStorage.getItem('darkTheme');
@@ -821,6 +813,18 @@
             });
         });
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Cada 10 minutos envía una solicitud para renovar la sesión
+            setInterval(() => {
+                fetch("{{ url('/keep-alive') }}", { credentials: 'same-origin' })
+                    .then(() => console.log('Sesión renovada'))
+                    .catch(() => console.warn('No se pudo renovar la sesión'));
+            }, 10 * 60 * 1000); // cada 10 minutos
+        });
+    </script>
+
 </body>
 
 </html>

@@ -25,6 +25,9 @@ Route::get('/', function () {
 Route::get('/postular', [PublicController::class, 'showForm'])->name('public.postulacion.form');
 Route::post('/postular', [PublicController::class, 'storeApplication'])->name('public.postulacion.store');
 
+Route::get('/keep-alive', function () {
+    return response()->noContent(); // 204 vacío
+})->middleware('auth');
 
 // Rutas protegidas (requieren autenticación)
 Route::middleware(['auth'])->group(function () {
