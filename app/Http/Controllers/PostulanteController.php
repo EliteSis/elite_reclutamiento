@@ -72,17 +72,17 @@ class PostulanteController extends Controller
             'estado' => 'required|in:nuevo,en evaluación,aceptado,rechazado,re-postulación',
 
             // Nuevos campos de Sí/No (booleanos)
-            'vacunado' => 'required|boolean',
-            'tiene_vehiculo' => 'required|boolean',
-            'tiene_soat' => 'required|boolean',
-            'tiene_licencia_l1' => 'required|boolean',
-            'tiene_licencia_l4' => 'required|boolean',
-            'tiene_licencia_l5' => 'required|boolean',
-            'recibo_agua' => 'required|boolean',
-            'certificado_estudios' => 'required|boolean',
-            'certiadulto' => 'required|boolean',
-            'multa_electoral' => 'required|boolean',
-            'antecedentes_penales' => 'required|boolean',
+            'vacunado' => 'nullable|boolean',
+            'tiene_vehiculo' => 'nullable|boolean',
+            'tiene_soat' => 'nullable|boolean',
+            'tiene_licencia_l1' => 'nullable|boolean',
+            'tiene_licencia_l4' => 'nullable|boolean',
+            'tiene_licencia_l5' => 'nullable|boolean',
+            'recibo_agua' => 'nullable|boolean',
+            'certificado_estudios' => 'nullable|boolean',
+            'certiadulto' => 'nullable|boolean',
+            'multa_electoral' => 'nullable|boolean',
+            'antecedentes_penales' => 'nullable|boolean',
 
             // Campos condicionales (solo se validan si su bandera es true)
             'numero_vacunas' => 'required_if:vacunado,1|nullable|integer|min:1',
@@ -106,7 +106,7 @@ class PostulanteController extends Controller
             'talla_polo' => 'nullable|string|max:5',
             'talla_camisa' => 'nullable|string|max:5',
             'talla_zapato' => 'nullable|string|max:5',
-            'tipo_licencia' => 'nullable|string|max:2',
+            'tipo_licencia' => 'nullable|string|max:6',
             'placa' => 'nullable|string|max:10',
             'ciudad_postular' => 'nullable|string|max:100',
             'distrito' => 'nullable|string|max:100',
@@ -129,6 +129,18 @@ class PostulanteController extends Controller
             'pdf_licencia_l1_sucamec' => 'nullable|file|mimes:pdf|max:2048',
             'pdf_licencia_l4_sucamec' => 'nullable|file|mimes:pdf|max:2048',
             'pdf_licencia_l5_sucamec' => 'nullable|file|mimes:pdf|max:2048',
+
+            //Nuevos campos agregados 24-10-2025 (10 items)
+            'referencia_contacto' => 'nullable|string',
+            'referencia_detalle' => 'nullable|string',
+            'emo' => 'nullable|file|mimes:pdf|max:2048',
+            'detalle_emo' => 'nullable|string',
+            'modo_reclutado' => 'nullable|string',
+            'documentado_por' => 'nullable|string',
+            'cliente' => 'nullable|string',
+            'puesto' => 'nullable|string',
+            'pdf_antecedentes_policiales' => 'nullable|file|mimes:pdf|max:2048',
+            'preguntas' => 'nullable|string',
         ]);
 
         // --- 2. PREPARAR DATOS PARA GUARDAR ---
@@ -223,7 +235,7 @@ class PostulanteController extends Controller
             'talla_polo' => 'nullable|string|max:5',
             'talla_camisa' => 'nullable|string|max:5',
             'talla_zapato' => 'nullable|string|max:5',
-            'tipo_licencia' => 'nullable|string|max:2',
+            'tipo_licencia' => 'nullable|string|max:6',
             'placa' => 'nullable|string|max:10',
             'ciudad_postular' => 'nullable|string|max:100',
             'distrito' => 'nullable|string|max:100',
@@ -245,7 +257,17 @@ class PostulanteController extends Controller
             'pdf_licencia_l4_sucamec' => 'nullable|file|mimes:pdf|max:2048',
             'pdf_licencia_l5_sucamec' => 'nullable|file|mimes:pdf|max:2048',
 
-            //SE AGREGO 3 MAS, EMO, REFERENCIA Y CONTACO DE REFERENCIA
+            //Nuevos campos agregados 24-10-2025 (10 items)
+            'referencia_contacto' => 'nullable|string',
+            'referencia_detalle' => 'nullable|string',
+            'emo' => 'nullable|file|mimes:pdf|max:2048',
+            'detalle_emo' => 'nullable|string',
+            'modo_reclutado' => 'nullable|string',
+            'documentado_por' => 'nullable|string',
+            'cliente' => 'nullable|string',
+            'puesto' => 'nullable|string',
+            'pdf_antecedentes_policiales' => 'nullable|file|mimes:pdf|max:2048',
+            'preguntas' => 'nullable|string',
         ]);
 
         // --- 2. PREPARAR DATOS PARA ACTUALIZAR ---
@@ -347,6 +369,8 @@ class PostulanteController extends Controller
                 'pdf_licencia_l1_sucamec' => 'Licencia_L1_SUCAMEC.pdf',
                 'pdf_licencia_l4_sucamec' => 'Licencia_L4_SUCAMEC.pdf',
                 'pdf_licencia_l5_sucamec' => 'Licencia_L5_SUCAMEC.pdf',
+                'pdf_antecedentes_policiales' => 'Antecedentes_Policiales.pdf',
+                'emo' => 'Emo_Ingreso.pdf',
             ];
 
             // 5. Añadir los archivos encontrados al ZIP
@@ -442,7 +466,9 @@ class PostulanteController extends Controller
             'pdf_curso',
             'pdf_licencia_l1_sucamec',
             'pdf_licencia_l4_sucamec',
-            'pdf_licencia_l5_sucamec'
+            'pdf_licencia_l5_sucamec',
+            'emo',
+            'pdf_antecedentes_policiales'
         ];
 
         $rutasArchivos = [];
@@ -483,7 +509,9 @@ class PostulanteController extends Controller
             'pdf_curso',
             'pdf_licencia_l1_sucamec',
             'pdf_licencia_l4_sucamec',
-            'pdf_licencia_l5_sucamec'
+            'pdf_licencia_l5_sucamec',
+            'emo',
+            'pdf_antecedentes_policiales'
         ];
 
         foreach ($camposArchivo as $campo) {
@@ -615,6 +643,8 @@ class PostulanteController extends Controller
                 'pdf_licencia_l1_sucamec' => 'Licencia_L1_SUCAMEC.pdf',
                 'pdf_licencia_l4_sucamec' => 'Licencia_L4_SUCAMEC.pdf',
                 'pdf_licencia_l5_sucamec' => 'Licencia_L5_SUCAMEC.pdf',
+                'pdf_antecedentes_policiales' => 'Antecedentes_Policiales.pdf',
+                'emo' => 'Emo_Ingreso.pdf',
             ];
 
             // Añadir archivos existentes a la carpeta del postulante en el ZIP

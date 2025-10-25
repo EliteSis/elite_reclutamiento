@@ -147,7 +147,7 @@
                                     <div class="col-md-4">
                                         <div class="form-floating">
                                             <select name="operador" id="operador" class="form-select" required>
-                                                <option value="" disabled selected>Seleccione un operador</option>
+                                                <option value="">-- Seleccionar --</option>
                                                 <option value="Movistar" {{ old('operador') == 'Movistar' ? 'selected' : '' }}>Movistar</option>
                                                 <option value="Claro" {{ old('operador') == 'Claro' ? 'selected' : '' }}>Claro</option>
                                                 <option value="Entel" {{ old('operador') == 'Entel' ? 'selected' : '' }}>Entel</option>
@@ -186,7 +186,6 @@
                                         </div>
                                     </div>
 
-                                    
                                 </div>
                             </div>
                         </div>
@@ -257,17 +256,74 @@
                                             @enderror
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Sección 4: Documentación y Archivos --}}
+                    {{-- Sección 4: EMO --}}
+                    <div class="accordion-item shadow-sm mb-3">
+                        <h2 class="accordion-header" id="headingEmo">
+                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEmo" aria-expanded="false" aria-controls="collapseEmo">
+                                <i class="bi bi-file-earmark-medical-fill me-2 text-success"></i> EMO de Ingreso
+                            </button>
+                        </h2>
+                        <div id="collapseEmo" class="accordion-collapse collapse" aria-labelledby="headingEmo" data-bs-parent="#formularioPostulanteAccordion">
+                            <div class="accordion-body">
+
+                                <div class="card border-0 shadow-sm rounded-4">
+
+                                    
+                                    <div class="card-body">
+
+                                        <div class="row g-4 align-items-center">
+                                            
+                                            <div class="col-md-6">
+                                                <label for="emo_file" class="form-label fw-semibold text-dark d-flex align-items-center mb-2">
+                                                    <i class="bi bi-file-earmark-arrow-up-fill text-success me-2 fs-5"></i>
+                                                    Subir Archivo EMO
+                                                </label>
+                                                <div class="input-group">
+                                                    <input
+                                                        type="file"
+                                                        name="emo"
+                                                        id="emo_file"
+                                                        class="form-control form-control-sm"
+                                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                                        onchange="document.getElementById('emo_file_name').textContent = this.files[0].name;">
+                                                    <label for="emo_file" class="input-group-text btn btn-sm btn-success">Examinar</label>
+                                                </div>
+                                                <small id="emo_file_name" class="text-muted fst-italic d-block mt-1">
+                                                    Ningún archivo seleccionado
+                                                </small>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input type="text" name="detalle_emo" id="detalle_emo" class="form-control @error('detalle_emo') is-invalid @enderror" placeholder="Detalle EMO" value="{{ old('detalle_emo') }}">
+                                                    <label for="detalle_emo">Detalle EMO</label>
+                                                    @error('detalle_emo')
+                                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                    {{-- Sección 5: Documentación y Archivos --}}
                     <div class="accordion-item shadow-sm mb-3">
                         <h2 class="accordion-header" id="headingDocumentos">
                             <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDocumentos" aria-expanded="false" aria-controls="collapseDocumentos">
-                                <i class="bi bi-file-earmark-text-fill me-2 text-success"></i> Documentación y Archivos
+                                <i class="bi bi-file-earmark-text-fill me-2 text-dark"></i> Documentación y Archivos
                             </button>
                         </h2>
                         <div id="collapseDocumentos" class="accordion-collapse collapse" aria-labelledby="headingDocumentos" data-bs-parent="#formularioPostulanteAccordion">
@@ -359,7 +415,7 @@
                         </div>
                     </div>
 
-                    {{-- Sección 5: Datos Adicionales (Vehículo, Licencias, etc.) --}}
+                    {{-- Sección 6: Datos Adicionales (Vehículo, Licencias, etc.) --}}
                     <div class="accordion-item shadow-sm mb-3">
                         <h2 class="accordion-header" id="headingVehiculo">
                             <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseVehiculo" aria-expanded="false" aria-controls="collapseVehiculo">
@@ -428,11 +484,11 @@
                         </div>
                     </div>
 
-                    {{-- Sección 6: Licencias SUCAMEC --}}
+                    {{-- Sección 7: Licencias SUCAMEC --}}
                     <div class="accordion-item shadow-sm mb-3">
                         <h2 class="accordion-header" id="headingSucamec">
                             <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSucamec" aria-expanded="false" aria-controls="collapseSucamec">
-                                <i class="bi bi-patch-check-fill me-2 text-warning"></i> Licencias SUCAMEC
+                                <i class="bi bi-file-earmark-text-fill me-2 text-warning"></i> Licencias SUCAMEC
                             </button>
                         </h2>
                         <div id="collapseSucamec" class="accordion-collapse collapse" aria-labelledby="headingSucamec" data-bs-parent="#formularioPostulanteAccordion">
@@ -470,7 +526,7 @@
                         </div>
                     </div>
 
-                    {{-- Sección 7: Tallas --}}
+                    {{-- Sección 8: Tallas --}}
                     <div class="accordion-item shadow-sm mb-3">
                         <h2 class="accordion-header" id="headingTallas">
                             <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTallas" aria-expanded="false" aria-controls="collapseTallas">
@@ -515,7 +571,7 @@
                         </div>
                     </div>
 
-                    {{-- Sección 8: Datos Bancarios --}}
+                    {{-- Sección 9: Datos Bancarios --}}
                     <div class="accordion-item shadow-sm mb-3">
                         <h2 class="accordion-header" id="headingBancarios">
                             <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBancarios" aria-expanded="false" aria-controls="collapseBancarios">
@@ -554,11 +610,11 @@
                         </div>
                     </div>
 
-                    {{-- Sección 9: Otros Datos --}}
+                    {{-- Sección 10: Experiencia --}}
                     <div class="accordion-item shadow-sm mb-3">
                         <h2 class="accordion-header" id="headingOtros">
                             <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOtros" aria-expanded="false" aria-controls="collapseOtros">
-                                <i class="bi bi-info-circle-fill me-2 text-dark"></i> Otros Datos
+                                <i class="bi bi-file-earmark-text-fill me-2 text-dark"></i> Experiencia
                             </button>
                         </h2>
                         <div id="collapseOtros" class="accordion-collapse collapse" aria-labelledby="headingOtros" data-bs-parent="#formularioPostulanteAccordion">
@@ -570,6 +626,23 @@
                                             <label for="detalle_experiencia">Detalle de Experiencia</label>
                                         </div>
                                     </div>
+                                    
+                                    <div class="col-12">
+                                        <div class="form-floating">
+                                            <textarea name="detalle_experiencia" id="detalle_experiencia" rows="3" class="form-control" placeholder="Detalle de su experiencia..." style="height:140px;">{{ old('detalle_experiencia') }}</textarea>
+                                            <label for="detalle_experiencia">Referencia Laboral: <span style="color: #adb5bd;">Nombre - Cargo - Empresa - Celular</span></label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="form-floating">
+                                            <textarea name="detalle_experiencia" id="detalle_experiencia" rows="3" class="form-control" placeholder="Detalle de su experiencia..." style="height:140px;">{{ old('detalle_experiencia') }}</textarea>
+                                            <label for="detalle_experiencia">Detalle de las Referencias</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <hr class="my-4">
+
                                     <div class="col-md-6">
                                         <div class="form-floating">
                                             <input type="text" name="curso" id="curso" class="form-control" placeholder="Curso" value="{{ old('curso') }}">

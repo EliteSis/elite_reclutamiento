@@ -85,6 +85,18 @@ class Postulante extends Model
         'pdf_licencia_l1_sucamec',
         'pdf_licencia_l4_sucamec',
         'pdf_licencia_l5_sucamec',
+
+        //Agregados el 24 de octubre 2025 (10 items)
+        'referencia_contacto',
+        'referencia_detalle',
+        'emo',
+        'detalle_emo',
+        'modo_reclutado',
+        'documentado_por',
+        'cliente',
+        'puesto',
+        'pdf_antecedentes_policiales',
+        'preguntas',
     ];
 
     /**
