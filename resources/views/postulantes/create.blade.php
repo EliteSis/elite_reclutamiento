@@ -270,12 +270,8 @@
                         </h2>
                         <div id="collapseEmo" class="accordion-collapse collapse" aria-labelledby="headingEmo" data-bs-parent="#formularioPostulanteAccordion">
                             <div class="accordion-body">
-
                                 <div class="card border-0 shadow-sm rounded-4">
-
-                                    
                                     <div class="card-body">
-
                                         <div class="row g-4 align-items-center">
                                             
                                             <div class="col-md-6">
@@ -307,7 +303,6 @@
                                                     @enderror
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>

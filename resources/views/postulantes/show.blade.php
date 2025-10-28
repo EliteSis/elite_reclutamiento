@@ -364,6 +364,14 @@
                             @endif
                         </li>
                         <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                            Antecedentes Penales (PDF)
+                            @if($postulante->pdf_antecedentes_penales && Storage::disk('public')->exists($postulante->pdf_antecedentes_penales))
+                                <a href="{{ asset('storage/' . $postulante->pdf_antecedentes_penales) }}" target="_blank" class="btn btn-sm btn-success">Ver</a>
+                            @else
+                                <span class="text-muted">No adjuntado</span>
+                            @endif
+                        </li>
+                        <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
                             Carnet de Vacuna (PDF)
                             @if($postulante->pdf_carnet_vacuna && Storage::disk('public')->exists($postulante->pdf_carnet_vacuna))
                                 <a href="{{ asset('storage/' . $postulante->pdf_carnet_vacuna) }}" target="_blank" class="btn btn-sm btn-success">Ver</a>
@@ -431,6 +439,15 @@
                             DNI de Hijos (PDF)
                             @if($postulante->pdf_dni_hijos && Storage::disk('public')->exists($postulante->pdf_dni_hijos))
                                 <a href="{{ asset('storage/' . $postulante->pdf_dni_hijos) }}" target="_blank" class="btn btn-sm btn-success">Ver</a>
+                            @else
+                                <span class="text-muted">No adjuntado</span>
+                            @endif
+                        </li>
+
+                        <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                            EMO de Ingreso (PDF)
+                            @if($postulante->emo && Storage::disk('public')->exists($postulante->emo))
+                                <a href="{{ asset('storage/' . $postulante->emo) }}" target="_blank" class="btn btn-sm btn-success">Ver</a>
                             @else
                                 <span class="text-muted">No adjuntado</span>
                             @endif

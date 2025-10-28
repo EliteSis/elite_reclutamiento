@@ -175,8 +175,16 @@
                     <table class="table table-hover align-middle mb-0" id="postulantesTable">
                         <thead class="bg-light">
                             <tr>
-                                <!-- 1. Añade la clase "col-name" aquí -->
-                                <th class="px-4 py-3 text-uppercase small fw-semibold text-muted col-name" scope="col">Apellidos y Nombres</th>
+                                <!-- MODIFICADO: Añadido contenedor para ordenamiento -->
+                                <th class="px-4 py-3 text-uppercase small fw-semibold text-muted col-name sortable" scope="col">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span>Apellidos y Nombres</span>
+                                        <div class="sort-icons ms-2">
+                                            <i class="bi bi-caret-up-fill sort-icon sort-up text-muted" aria-hidden="true"></i>
+                                            <i class="bi bi-caret-down-fill sort-icon sort-down text-muted" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </th>
                                 <th class="px-4 py-3 text-uppercase small fw-semibold text-muted" scope="col">DNI</th>
                                 <th class="px-4 py-3 text-uppercase small fw-semibold text-muted" scope="col">Contacto</th>
                                 <th class="px-4 py-3 text-uppercase small fw-semibold text-muted" scope="col">Estado</th>
@@ -194,7 +202,6 @@
                                             </div>
                                             <div class="overflow-hidden">
                                                 <p class="mb-0 fw-semibold text-dark">{{ $postulante->apellidos_nombres }}</p>
-                                                <!-- 3. Añade "text-truncate d-block" y un "title" aquí -->
                                                 <small class="text-muted text-truncate d-block"
                                                     title="{{ $postulante->ciudad_postular ?: 'Sin especificar' }}">
                                                     {{ $postulante->ciudad_postular ?: 'Sin especificar' }}
@@ -284,7 +291,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="text-center py-5"> <!-- ¡CORREGIDO! -->
+                                    <td colspan="5" class="text-center py-5">
                                         <i class="bi bi-inbox fs-1 text-muted d-block mb-3" aria-hidden="true"></i>
                                         <p class="text-muted mb-0">No hay postulantes registrados</p>
                                         <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#modalCreate">
@@ -386,27 +393,34 @@
             background-color: #f8f9fa;
         }
 
-
-        /* Estilos para el encabezado fijo de la tabla */
-        .table-responsive {
-            position: relative;
-            max-height: 70vh; /* Altura máxima para que aparezca el scroll */
-            overflow-y: auto;
+        /* Estilos para las flechas de ordenamiento */
+        .sortable {
+            cursor: pointer;
+            user-select: none;
         }
 
-        .table thead th {
-            position: sticky;
-            top: 0;
-            background-color: #f8f9fa; /* Mismo color que bg-light */
-            z-index: 10;
-            box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
+        .sortable:hover {
+            background-color: #e9ecef;
         }
 
-        /* Aseguramos que el encabezado tenga un fondo sólido */
-        .table thead {
-            background-color: #f8f9fa;
+        .sort-icons {
+            display: flex;
+            flex-direction: column;
+            line-height: 0.6;
         }
 
+        .sort-icon {
+            font-size: 0.7rem;
+            transition: color 0.2s;
+        }
+
+        .sort-icon.active {
+            color: #0d6efd !important;
+        }
+
+        .sort-icon:not(.active):hover {
+            color: #6c757d !important;
+        }
 
         /* --- INICIO: ESTILOS PARA LA BARRA DE SCROLL MORADA --- */
 
@@ -439,7 +453,6 @@
         }
 
         /* --- FIN: ESTILOS PARA LA BARRA DE SCROLL --- */
-
 
         .action-buttons {
             display: flex;
@@ -654,20 +667,14 @@
                         tableRows.forEach(row => {
                             const nameCell = row.querySelector('p.fw-semibold');
                             const dniCell = row.querySelector('.badge');
-                            //const emailCell = row.querySelector('a[href^="mailto:"]');
-                            // NUEVO: Buscamos la etiqueta <small> que contiene la ciudad usando su clase
                             const ciudadCell = row.querySelector('small.text-truncate');
 
                             const nameText = nameCell ? nameCell.textContent.toLowerCase() : '';
                             const dniText = dniCell ? dniCell.textContent.toLowerCase() : '';
-                            //const emailText = emailCell ? emailCell.textContent.toLowerCase() : '';
-                            // NUEVO: Obtenemos el texto de la celda de la ciudad
                             const ciudadText = ciudadCell ? ciudadCell.textContent.toLowerCase() : '';
 
-                            // NUEVO: Añadimos la ciudad a la condición de búsqueda
                             if (nameText.includes(searchTerm) ||
                                 dniText.includes(searchTerm) ||
-                                //emailText.includes(searchTerm) ||
                                 ciudadText.includes(searchTerm)) {
                                 row.style.display = '';
                                 visibleCount++;
@@ -702,6 +709,58 @@
                         }
                     });
                 });
+            }
+
+            // ---- ORDENAMIENTO DE TABLA ----
+            const sortableHeader = document.querySelector('.sortable');
+            let sortOrder = 'asc'; // 'asc' o 'desc'
+            
+            if (sortableHeader) {
+                // Inicializar estado visual de las flechas
+                updateSortIcons(sortOrder);
+                
+                sortableHeader.addEventListener('click', function() {
+                    // Alternar el orden
+                    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                    
+                    // Actualizar el estado visual de las flechas
+                    updateSortIcons(sortOrder);
+                    
+                    // Obtener todas las filas visibles (no las que están ocultas por búsqueda)
+                    const visibleRows = Array.from(tbody.querySelectorAll('tr.table-row-item')).filter(row => row.style.display !== 'none');
+                    
+                    // Ordenar las filas
+                    visibleRows.sort((a, b) => {
+                        const nameA = a.querySelector('p.fw-semibold').textContent.trim();
+                        const nameB = b.querySelector('p.fw-semibold').textContent.trim();
+                        
+                        if (sortOrder === 'asc') {
+                            return nameA.localeCompare(nameB, 'es', { sensitivity: 'base' });
+                        } else {
+                            return nameB.localeCompare(nameA, 'es', { sensitivity: 'base' });
+                        }
+                    });
+                    
+                    // Eliminar todas las filas del tbody
+                    visibleRows.forEach(row => row.remove());
+                    
+                    // Volver a agregar las filas ordenadas
+                    visibleRows.forEach(row => tbody.appendChild(row));
+                });
+            }
+            
+            // Función para actualizar el estado visual de las flechas
+            function updateSortIcons(order) {
+                const upIcon = sortableHeader.querySelector('.sort-up');
+                const downIcon = sortableHeader.querySelector('.sort-down');
+                
+                if (order === 'asc') {
+                    upIcon.classList.add('active');
+                    downIcon.classList.remove('active');
+                } else {
+                    downIcon.classList.add('active');
+                    upIcon.classList.remove('active');
+                }
             }
 
             // ---- NUEVO: FILTRADO POR TARJETAS (VERSIÓN FINAL CON BÚSQUEDA INTEGRADA) ----
@@ -843,73 +902,72 @@
                 });
             });
 
-
             const btnDescargarTodos = document.getElementById('btnDescargarTodos');
 
-                if (btnDescargarTodos) {
-                    btnDescargarTodos.addEventListener('click', function () {
-                        // 1. Recolectar los IDs de las filas visibles en la tabla
-                        const postulanteIds = [];
-                        document.querySelectorAll('tbody tr[data-id]').forEach(fila => {
-                            postulanteIds.push(fila.dataset.id);
-                        });
-
-                        if (postulanteIds.length === 0) {
-                            alert('No hay postulantes visibles para descargar.');
-                            return;
-                        }
-
-                        // 2. Confirmar la acción
-                        if (!confirm(`¿Estás seguro de descargar los documentos de ${postulanteIds.length} postulante(s)?`)) {
-                            return;
-                        }
-
-                        // 3. Deshabilitar el botón y mostrar estado de carga
-                        btnDescargarTodos.disabled = true;
-                        const originalHtml = btnDescargarTodos.innerHTML;
-                        btnDescargarTodos.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generando...';
-
-                        // 4. Enviar los IDs al servidor via Fetch API
-                        fetch('{{ route("postulantes.descargarTodos") }}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify({
-                                ids: postulanteIds
-                            })
-                        })
-                        .then(response => {
-                            // Si la respuesta no es OK, lanzar un error
-                            if (!response.ok) {
-                                return response.text().then(text => { throw new Error(text) });
-                            }
-                            return response.blob();
-                        })
-                        .then(blob => {
-                            // 5. Crear una URL para el blob y forzar la descarga
-                            const url = window.URL.createObjectURL(blob);
-                            const a = document.createElement('a');
-                            a.style.display = 'none';
-                            a.href = url;
-                            a.download = 'documentos_postulantes_masivos.zip'; // Nombre del archivo a descargar
-                            document.body.appendChild(a);
-                            a.click();
-                            window.URL.revokeObjectURL(url);
-                            document.body.removeChild(a);
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('Ocurrió un error al generar la descarga: ' + error.message);
-                        })
-                        .finally(() => {
-                            // 6. Restaurar el botón
-                            btnDescargarTodos.disabled = false;
-                            btnDescargarTodos.innerHTML = originalHtml;
-                        });
+            if (btnDescargarTodos) {
+                btnDescargarTodos.addEventListener('click', function () {
+                    // 1. Recolectar los IDs de las filas visibles en la tabla
+                    const postulanteIds = [];
+                    document.querySelectorAll('tbody tr[data-id]').forEach(fila => {
+                        postulanteIds.push(fila.dataset.id);
                     });
-                }
+
+                    if (postulanteIds.length === 0) {
+                        alert('No hay postulantes visibles para descargar.');
+                        return;
+                    }
+
+                    // 2. Confirmar la acción
+                    if (!confirm(`¿Estás seguro de descargar los documentos de ${postulanteIds.length} postulante(s)?`)) {
+                        return;
+                    }
+
+                    // 3. Deshabilitar el botón y mostrar estado de carga
+                    btnDescargarTodos.disabled = true;
+                    const originalHtml = btnDescargarTodos.innerHTML;
+                    btnDescargarTodos.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generando...';
+
+                    // 4. Enviar los IDs al servidor via Fetch API
+                    fetch('{{ route("postulantes.descargarTodos") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            ids: postulanteIds
+                        })
+                    })
+                    .then(response => {
+                        // Si la respuesta no es OK, lanzar un error
+                        if (!response.ok) {
+                            return response.text().then(text => { throw new Error(text) });
+                        }
+                        return response.blob();
+                    })
+                    .then(blob => {
+                        // 5. Crear una URL para el blob y forzar la descarga
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.style.display = 'none';
+                        a.href = url;
+                        a.download = 'documentos_postulantes_masivos.zip'; // Nombre del archivo a descargar
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        document.body.removeChild(a);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Ocurrió un error al generar la descarga: ' + error.message);
+                    })
+                    .finally(() => {
+                        // 6. Restaurar el botón
+                        btnDescargarTodos.disabled = false;
+                        btnDescargarTodos.innerHTML = originalHtml;
+                    });
+                });
+            }
         });
     </script>
 @endpush

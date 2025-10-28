@@ -260,6 +260,55 @@
                             </div>
                         </div>
                     </div>
+                    
+                    {{-- Sección 4: EMO --}}
+                    <div class="accordion-item shadow-sm mb-3">
+                        <h2 class="accordion-header" id="headingEmo">
+                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEmo" aria-expanded="false" aria-controls="collapseEmo">
+                                <i class="bi bi-file-earmark-medical-fill me-2 text-success"></i> EMO de Ingreso
+                            </button>
+                        </h2>
+                        <div id="collapseEmo" class="accordion-collapse collapse" aria-labelledby="headingEmo" data-bs-parent="#formularioPostulanteAccordion">
+                            <div class="accordion-body">
+                                <div class="card border-0 shadow-sm rounded-4">
+                                    <div class="card-body">
+                                        <div class="row g-4 align-items-center">
+                                            
+                                            <div class="col-md-6">
+                                                <label for="emo_file" class="form-label fw-semibold text-dark d-flex align-items-center mb-2">
+                                                    <i class="bi bi-file-earmark-arrow-up-fill text-success me-2 fs-5"></i>
+                                                    Subir Archivo EMO
+                                                </label>
+                                                <div class="input-group">
+                                                    <input
+                                                        type="file"
+                                                        name="emo"
+                                                        id="emo_file"
+                                                        class="form-control form-control-sm"
+                                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                                        onchange="document.getElementById('emo_file_name').textContent = this.files[0].name;">
+                                                    <label for="emo_file" class="input-group-text btn btn-sm btn-success">Examinar</label>
+                                                </div>
+                                                <small id="emo_file_name" class="text-muted fst-italic d-block mt-1">
+                                                    Ningún archivo seleccionado
+                                                </small>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input type="text" name="detalle_emo" id="detalle_emo" class="form-control @error('detalle_emo') is-invalid @enderror" placeholder="Detalle EMO" value="{{ old('detalle_emo', $postulante->detalle_emo) }}">
+                                                    <label for="detalle_emo">Detalle EMO</label>
+                                                    @error('detalle_emo')
+                                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     {{-- Sección 4: Documentación y Archivos --}}
                     <div class="accordion-item shadow-sm mb-3">
