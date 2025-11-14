@@ -21,15 +21,11 @@
                     <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 5px; background: rgba(255, 255, 255, 0.45);"></div>
                 </div>
             </div>
-
-
             <form action="{{ route('postulantes.store') }}" method="POST" enctype="multipart/form-data" id="formCreatePostulante" novalidate>
                 @csrf
                 @include('partials.errors')
-
                 {{-- Acordeón Principal del Formulario --}}
                 <div class="accordion" id="formularioPostulanteAccordion">
-
                     {{-- Sección 1: Información Personal (Abierta por defecto) --}}
                     <div class="accordion-item shadow-sm mb-3">
                         <h2 class="accordion-header" id="headingInfoPersonal">
@@ -118,7 +114,6 @@
                             </div>
                         </div>
                     </div>
-
                     {{-- Sección 2: Contacto y Ubicación (Abierta por defecto) --}}
                     <div class="accordion-item shadow-sm mb-3">
                         <h2 class="accordion-header" id="headingContacto">
@@ -156,28 +151,24 @@
                                             <label for="operador">Operador</label>
                                         </div>
                                     </div>
-
                                     <div class="col-md-4">
                                         <div class="form-floating">
                                             <input type="text" name="distrito" id="distrito" class="form-control" placeholder="Distrito" value="{{ old('distrito') }}">
                                             <label for="distrito">Distrito</label>
                                         </div>
                                     </div>
-
                                     <div class="col-md-4">
                                         <div class="form-floating">
                                             <input type="text" name="provincia" id="provincia" class="form-control" placeholder="Provincia" value="{{ old('provincia') }}">
                                             <label for="provincia">Provincia</label>
                                         </div>
                                     </div>
-
                                     <div class="col-md-4">
                                         <div class="form-floating">
                                             <input type="text" name="departamento" id="departamento" class="form-control" placeholder="Departamento" value="{{ old('departamento') }}">
                                             <label for="departamento">Departamento</label>
                                         </div>
                                     </div>
-
                                     <div class="col-md-12">
                                         <div class="form-floating">
                                             <input type="text" name="direccion" id="direccion" class="form-control @error('direccion') is-invalid @enderror" placeholder="Dirección completa" value="{{ old('direccion') }}">
@@ -185,12 +176,10 @@
                                             @error('direccion')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     {{-- Sección 3: Salud y Física --}}
                     <div class="accordion-item shadow-sm mb-3">
                         <h2 class="accordion-header" id="headingSalud">
@@ -240,7 +229,6 @@
                                             <div class="text-danger small ms-2">{{ $message }}</div>
                                         @enderror
                                     </div>
-
                                     <div class="col-md-4" id="campo_numero_vacunas" style="{{ old('vacunado') ? '' : 'display:none;' }}">
                                         <div class="form-floating">
                                             <input 
@@ -260,7 +248,6 @@
                             </div>
                         </div>
                     </div>
-
                     {{-- Sección 4: EMO --}}
                     <div class="accordion-item shadow-sm mb-3">
                         <h2 class="accordion-header" id="headingEmo">
@@ -293,7 +280,6 @@
                                                     Ningún archivo seleccionado
                                                 </small>
                                             </div>
-
                                             <div class="col-md-6">
                                                 <div class="form-floating">
                                                     <input type="text" name="detalle_emo" id="detalle_emo" class="form-control @error('detalle_emo') is-invalid @enderror" placeholder="Detalle EMO" value="{{ old('detalle_emo') }}">
@@ -309,11 +295,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
-
-
                     {{-- Sección 5: Documentación y Archivos --}}
                     <div class="accordion-item shadow-sm mb-3">
                         <h2 class="accordion-header" id="headingDocumentos">
@@ -367,7 +348,6 @@
                                         </h5>
                                         <small class="text-dark-50">Formatos permitidos: PDF, DOC, JPG, PNG</small>
                                     </div>
-
                                     <div class="card-body bg-light">
                                         <div class="row g-4">
                                             @foreach([
@@ -405,11 +385,9 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
-
                     {{-- Sección 6: Datos Adicionales (Vehículo, Licencias, etc.) --}}
                     <div class="accordion-item shadow-sm mb-3">
                         <h2 class="accordion-header" id="headingVehiculo">
@@ -420,7 +398,6 @@
                         <div id="collapseVehiculo" class="accordion-collapse collapse" aria-labelledby="headingVehiculo" data-bs-parent="#formularioPostulanteAccordion">
                             <div class="accordion-body">
                                 <div class="row g-3">
-                                    
                                     <div class="col-md-2">
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" name="tiene_vehiculo" id="vehiculo_si" value="1" 
@@ -431,7 +408,6 @@
                                             <div class="text-danger small">{{ $message }}</div>
                                         @enderror
                                     </div>
-
                                     <div class="col-md-3" id="campo_tipo_vehiculo">
                                         <div class="form-floating">
                                             <input type="text" name="tipo_vehiculo" id="tipo_vehiculo" 
@@ -443,21 +419,18 @@
                                             @enderror
                                         </div>
                                     </div>
-
                                     <div class="col-md-3">
                                         <div class="form-floating">
                                             <input type="text" name="placa" id="placa" class="form-control" placeholder="Placa" value="{{ old('placa') }}">
                                             <label for="placa">Placa</label>
                                         </div>
                                     </div>
-
                                     <div class="col-md-3">
                                         <div class="form-floating">
                                             <input type="text" name="tipo_licencia" id="tipo_licencia" class="form-control" placeholder="Ej: A1, B" value="{{ old('tipo_licencia') }}">
                                             <label for="tipo_licencia">Tipo Licencia de Conducir</label>
                                         </div>
                                     </div>
-
                                     <div class="col-md-2">
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" name="tiene_soat" id="soat_si" value="1" @if(old('tiene_soat')) checked @endif>
@@ -465,7 +438,6 @@
                                         </div>
                                         @error('tiene_soat')<div class="text-danger small">{{ $message }}</div>@enderror
                                     </div>
-
                                     <div class="col-md-3" id="campo_numero_soat" ">
                                         <div class="form-floating">
                                             <input type="text" name="numero_soat" id="numero_soat" class="form-control @error('numero_soat') is-invalid @enderror" placeholder="Número" value="{{ old('numero_soat') }}">
@@ -473,12 +445,10 @@
                                             @error('numero_soat')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                         </div>
                                     </div>
-                                    
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     {{-- Sección 7: Licencias SUCAMEC --}}
                     <div class="accordion-item shadow-sm mb-3">
                         <h2 class="accordion-header" id="headingSucamec">
@@ -520,7 +490,6 @@
                             </div>
                         </div>
                     </div>
-
                     {{-- Sección 8: Tallas --}}
                     <div class="accordion-item shadow-sm mb-3">
                         <h2 class="accordion-header" id="headingTallas">
@@ -565,7 +534,6 @@
                             </div>
                         </div>
                     </div>
-
                     {{-- Sección 9: Datos Bancarios --}}
                     <div class="accordion-item shadow-sm mb-3">
                         <h2 class="accordion-header" id="headingBancarios">
@@ -604,7 +572,6 @@
                             </div>
                         </div>
                     </div>
-
                     {{-- Sección 10: Experiencia --}}
                     <div class="accordion-item shadow-sm mb-3">
                         <h2 class="accordion-header" id="headingOtros">
@@ -628,16 +595,13 @@
                                             <label for="detalle_experiencia">Referencia Laboral: <span style="color: #adb5bd;">Nombre - Cargo - Empresa - Celular</span></label>
                                         </div>
                                     </div>
-
                                     <div class="col-12">
                                         <div class="form-floating">
                                             <textarea name="detalle_experiencia" id="detalle_experiencia" rows="3" class="form-control" placeholder="Detalle de su experiencia..." style="height:140px;">{{ old('detalle_experiencia') }}</textarea>
                                             <label for="detalle_experiencia">Detalle de las Referencias</label>
                                         </div>
                                     </div>
-                                    
                                     <hr class="my-4">
-
                                     <div class="col-md-6">
                                         <div class="form-floating">
                                             <input type="text" name="curso" id="curso" class="form-control" placeholder="Curso" value="{{ old('curso') }}">
@@ -655,7 +619,6 @@
                         </div>
                     </div>
                 </div>
-
                 {{-- Botones de Envío --}}
                 <div class="card shadow-sm border-0 mt-4">
                     <div class="card-body d-flex justify-content-end">
@@ -698,7 +661,6 @@
             toggleFields.forEach(item => {
                 const checkbox = document.getElementById(item.checkbox);
                 const targetField = document.getElementById(item.field);
-
                 function toggleVisibility() {
                     if (checkbox.checked) {
                         targetField.style.display = 'block';
@@ -707,16 +669,13 @@
                         targetField.style.display = 'none';
                     }
                 }
-
                 checkbox.addEventListener('change', toggleVisibility);
                 toggleVisibility(); // Estado inicial
             });
 
-
             // --- NUEVO: Habilitar/Deshabilitar campo "Tipo de vehículo" ---
             const checkVehiculo = document.getElementById('vehiculo_si');
             const campoTipoVehiculo = document.getElementById('tipo_vehiculo');
-
             function actualizarEstadoVehiculo() {
                 if (checkVehiculo.checked) {
                     campoTipoVehiculo.disabled = false;
@@ -726,7 +685,6 @@
                     campoTipoVehiculo.disabled = true;
                 }
             }
-
             checkVehiculo.addEventListener('change', actualizarEstadoVehiculo);
             actualizarEstadoVehiculo(); // Estado inicial
 
@@ -743,24 +701,21 @@
                     campoNumeroSoat.disabled = true;
                 }
             }
-
             checkSoat.addEventListener('change', actualizarEstadoSoat);
             actualizarEstadoSoat(); // Estado inicial
-
 
             // --- Lógica para el cálculo automático del IMC con categoría ---
             const estaturaInput = document.getElementById('estatura');
             const pesoInput = document.getElementById('peso');
             const imcInput = document.getElementById('imc');
             const imcCategoryDiv = document.getElementById('imc-category');
-
             function getIMCCategory(imc) {
                 if (imc < 18.5) return { text: 'Bajo Peso', class: 'text-primary' };
                 if (imc < 25) return { text: 'Normal', class: 'text-success' };
                 if (imc < 30) return { text: 'Sobrepeso', class: 'text-warning' };
                 return { text: 'Obesidad', class: 'text-danger' };
             }
-
+            
             function calcularIMC() {
                 const estatura = parseFloat(estaturaInput.value);
                 const peso = parseFloat(pesoInput.value);
