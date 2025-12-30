@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Postulante;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-// ... imports
 use App\Models\User;
 use App\Notifications\NuevaPostulacionNotification;
+use App\Mail\ContactoMail;
+use App\Mail\PostulacionMail;
+use App\Mail\CotizacionMail;
+
 class PublicController extends Controller
 {
     /**
@@ -15,7 +18,6 @@ class PublicController extends Controller
      */
     public function showForm()
     {
-        // Aquí puedes cargar información de la empresa si la necesitas en la vista
         return view('public.postulacion');
     }
 
@@ -24,7 +26,6 @@ class PublicController extends Controller
      */
     public function storeApplication(Request $request)
     {
-        // 1. Validación de los datos del formulario
         $request->validate([
             'apellidos_nombres' => 'required|string|max:255',
             'dni' => 'required|string|max:20|unique:postulantes,dni',
@@ -34,7 +35,6 @@ class PublicController extends Controller
             'detalle_experiencia' => 'required|string',
         ]);
 
-        // 2. Creación del nuevo postulante en la base de datos
         $postulante = Postulante::create([
             'apellidos_nombres' => $request->apellidos_nombres,
             'dni' => $request->dni,
@@ -42,19 +42,100 @@ class PublicController extends Controller
             'ciudad_postular' => $request->ciudad_postular,
             'fecha_nacimiento' => $request->fecha_nacimiento,
             'detalle_experiencia' => $request->detalle_experiencia,
-            // Asumimos que tienes un campo 'estado' en tu tabla
-            'estado' => 'nuevo', // O el estado inicial que prefieras
+            'estado' => 'nuevo',
         ]);
 
-        // 3. Enviar notificación a los administradores (lo haremos en el paso 3)
-                // 3. Enviar notificación a los administradores
-        $adminUser = User::find(1); // <-- Busca un usuario admin. ¡Ajusta esto según tu lógica!
+        $adminUser = User::find(1);
         if ($adminUser) {
             $adminUser->notify(new NuevaPostulacionNotification($postulante));
         }
 
-        // 4. Redireccionar de vuelta con un mensaje de éxito
         return redirect()->route('public.postulacion.form')
             ->with('success', '¡Tu postulación ha sido enviada correctamente! Nos pondremos en contacto pronto.');
+    }
+
+    /**
+     * Muestra la página del blog
+     */
+    public function blog()
+    {
+        $posts = [
+            [
+                'title' => 'Noticias de Seguridad',
+                'content' => 'Últimas actualizaciones sobre seguridad y tecnología...',
+                'date' => '2023-12-01'
+            ],
+            [
+                'title' => 'Ofertas Laborales Disponibles',
+                'content' => 'Nuevas oportunidades de empleo en nuestro equipo...',
+                'date' => '2023-12-05'
+            ]
+        ];
+        return view('public.blog', compact('posts'));
+    }
+
+    /**
+     * Muestra la página de contacto
+     */
+    public function contacto()
+    {
+        return view('public.contacto');
+    }
+
+    /**
+     * Muestra la página de cotización
+     */
+    public function cotiza()
+    {
+        return view('public.cotiza');
+    }
+
+    /**
+     * Muestra la página de nosotros
+     */
+    public function nosotros()
+    {
+        return view('public.nosotros');
+    }
+
+    /**
+     * Muestra la página de servicios
+     */
+    public function servicios()
+    {
+        $servicios = [
+            [
+                'title' => 'Vigilancia Privada',
+                'description' => 'Protección 24/7 para residencias y negocioss',
+                'image' => 'https://picsum.photos/seed/vigilancia/400/300.jpg'
+            ],
+            [
+                'title' => 'Seguridad Corporativa',
+                'description' => 'Soluciones integrales para empresas',
+                'image' => 'https://picsum.photos/seed/corporativa/400/300.jpg'
+            ],
+            [
+                'title' => 'Seguridad Residencial',
+                'description' => 'Protección para tu hogar y familia',
+                'image' => 'https://picsum.photos/seed/residencial/400/300.jpg'
+            ]
+        ];
+        return view('public.servicios', compact('servicios'));
+    }
+
+    /**
+     * Guarda la cotización
+     */
+    public function storeCotizacion(Request $request)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'email' => 'required|email',
+            'mensaje' => 'required|string'
+        ]);
+
+        // Mail::to('ventas@seguridad.com')->send(new CotizacionMail($request->all()));
+
+        return redirect()->route('public.cotiza')->with('success', 'Tu mensaje ha sido enviado correctamente.');
     }
 }

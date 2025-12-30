@@ -17,13 +17,22 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Ruta principal (redirige al login si no está autenticado)
 Route::get('/', function () {
-    return redirect()->route('login');
+    return redirect()->route('public.postulacion.form');
 });
 
 
+
 // Rutas públicas para la página web y postulación
-Route::get('/postular', [PublicController::class, 'showForm'])->name('public.postulacion.form');
-Route::post('/postular', [PublicController::class, 'storeApplication'])->name('public.postulacion.store');
+Route::get('/inicio', [PublicController::class, 'showForm'])->name('public.postulacion.form');
+Route::post('/inicio', [PublicController::class, 'storeApplication'])->name('public.postulacion.store');
+
+// routes/web.php
+    Route::get('/', [PublicController::class, 'showForm'])->name('public.postulacion.form');
+    Route::get('/blog', [PublicController::class, 'blog'])->name('public.blog');
+    Route::get('/contacto', [PublicController::class, 'contacto'])->name('public.contacto');
+    Route::get('/cotiza', [PublicController::class, 'cotiza'])->name('public.cotiza');
+    Route::get('/nosotros', [PublicController::class, 'nosotros'])->name('public.nosotros');
+    Route::get('/servicios', [PublicController::class, 'servicios'])->name('public.servicios');
 
 Route::get('/keep-alive', function () {
     return response()->noContent(); // 204 vacío
@@ -76,6 +85,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/notificaciones/dropdown', [App\Http\Controllers\NotificationController::class, 'getDropdownNotifications'])->name('notifications.dropdown');
 
+    
 
 });
 
