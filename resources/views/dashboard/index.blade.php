@@ -9,7 +9,7 @@
             <div class="col-12">
                 <h1 class="fw-bold text-dark">
                     <i class="bi bi-speedometer2 text-primary me-2"></i>
-                    Dashboard de Reclutamiento
+                    Dashboard de Reclutamientoo
                 </h1>
                 <p class="text-muted">Resumen general del proceso de selección</p>
             </div>
